@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style type="text/css">
+  #radios,#ctrlbtns 
+  {
+    max-width:600px; min-width:100px; margin-left: auto; margin-right: auto;text-align : center; margin-top: 50px;
+  }
+  </style>
+</head>
+<body>
+  <div id="ctrlbtns">
+    <input id="reviewbtn" type="submit" value="通过" onclick="reviewdanmu();" />
+    <input id="deletebtn" type="submit" value="删除" onclick="deletedanmu();" />
+    <input id="selectallbtn" type="submit" value="反选" onclick="selectalldanmu();" />
+  </div>
+  <form id="radios"></form>
+</body>
+<script>
+
+var json;
+var responseRes;
+
+requestDanmus();
+
+function requestDanmus() {
+    var urlreq = new XMLHttpRequest()
+    urlreq.open('GET', 'danmudata/getdanmu.php?showflag=999')
+    var self = this
+    urlreq.onload = function() {
+        responseRes = JSON.parse(urlreq.responseText)
+        json = eval("(" + urlreq.responseText + ")");
+        for (j = 0; j < json.length; j++) {
+            var para = document.createElement("input");
+            para.type = "checkbox";
+            para.value = JSON.parse(urlreq.responseText)[j].danmustr;
+            para.name = "r"
+
+            var testdiv = document.getElementById("radios");
+            testdiv.appendChild(para);
+            var aele = document.createElement("a");
+            aele.innerHTML = JSON.parse(urlreq.responseText)[j].danmustr
+            testdiv.appendChild(aele);
+            testdiv.appendChild(document.createElement("br"));
+            testdiv.style = "text-align:left";
+        }
+    }
+    urlreq.send()
+}
+
+function reviewdanmu() {
+    controlDanmu("1");
+}
+
+function deletedanmu() {
+    controlDanmu("0");
+}
+
+function controlDanmu(ctrltype) {
+    var valuearray = []
+    var r = document.getElementsByName("r");
+    for (var i = 0; i < r.length; i++) {
+        if (r[i].checked) {
+            valuearray.push(responseRes[i].danmuid);
+        }
+    }
+
+    var navLst = {};
+    var reqInfo = {};
+    reqInfo['idlist'] = valuearray;
+    reqInfo['ctrltype'] = ctrltype;
+
+    var reqSent = JSON.stringify(reqInfo);
+
+    var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = ActiveXObject('Microsoft.XMLHttp');
+    }
+
+    xhr.open('POST', 'danmudata/reviewdanmu.php', true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                window.location.reload();
+            } else {
+                alert("faild");
+            }
+        }
+
+    };
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('reqSent=' + reqSent);
+}
+
+function selectalldanmu() {
+    var r = document.getElementsByName("r");
+    for (var i = 0; i < r.length; i++) {
+        r[i].checked = !r[i].checked;
+    }
+}
+
+</script>
+</html>

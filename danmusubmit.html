@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<div align="center">
+		<div>
+			<textarea id="contenttext" rows="10" cols="30"></textarea>
+		</div>
+    <div>
+      <span id="textlength">0</span> / 50
+    </div>
+		<div>
+			<img id="checkpic" onclick="changing();" src='danmudata/yanzhengma.php' />	
+			<input id="codetext" type="text" name="user" />	
+			<div>
+				<input id="savecode" type="submit" value="Submit" />	
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+
+  $(document).ready(function(){
+      $("#savecode").click(function(){ 
+        var codestr = $("#codetext").val();
+        var contentstr = $("#contenttext").val();
+        if ($("#contenttext").val().length > 50) {
+          alert("弹幕太长了……");
+          return;
+        }
+        if ($("#codetext").val().length != 4) {
+          alert("验证码……");
+          return;
+        }
+
+        $.post("danmudata/yanzhengmacheck.php",
+          {"vercode":codestr,
+          "content":contentstr},
+          function(data,status){
+            // alert(data);
+            if (data == 1) {
+              alert("success");
+              window.location.reload();
+              $("#codetext").val("");
+              $("#contenttext").val("");
+            }else if (data == 0){
+              alert("faild");
+            }else{
+              alert(data);
+            }
+          });
+      });
+
+      $("#contenttext").keyup(function(){
+        var length = $("#contenttext").val().length;
+        $("#textlength").text(length);
+      })
+
+  });
+
+	function changing(){
+	    document.getElementById('checkpic').src="danmudata/yanzhengma.php?"+Math.random();
+	}
+
+</script>
+</html>
