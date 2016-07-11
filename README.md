@@ -11,12 +11,12 @@ Mysql 5.0.11
 
 ### submit the danmu
 
-![udspj](https://github.com/udspj/MiniDanmakuChan/blob/master/readmeimg/img1.png?raw=true)
+![udspj](https://github.com/udspj/MiniWebDanmakuChan/blob/master/readmeimg/img1.png?raw=true)
 
 ### review danmus
 
-![udspj](https://github.com/udspj/MiniDanmakuChan/blob/master/readmeimg/img2.png?raw=true)
+![udspj](https://github.com/udspj/MiniWebDanmakuChan/blob/master/readmeimg/img2.png?raw=true)
 
 ### show danmus
 
-![udspj](https://github.com/udspj/MiniDanmakuChan/blob/master/readmeimg/img3.png?raw=true)
+![udspj](https://github.com/udspj/MiniWebDanmakuChan/blob/master/readmeimg/img3.png?raw=true)
